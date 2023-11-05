@@ -69,6 +69,14 @@ function draw() {
   let dynamicRadius = map(bass, 0, 255, circleDiameter / 2, circleDiameter*1.2); // Adjusted max limit
   dynamicRadius = constrain(dynamicRadius, circleDiameter / 2, circleDiameter*1.2); // Ensure it stays within limits
 
+  if (!song.isPlaying()) {
+    // Display start/pause instructions
+    fill(255); // Set the text color
+    textAlign(CENTER, CENTER); // Align the text to be in the center
+    textSize(24); // Set the text size
+    text("Click to Start/Pause", width / 2, height / 2); // Draw the text in the middle of the screen
+  }
+
 
 
   // Check if the song is playing before updating the angle for rotation
@@ -112,7 +120,7 @@ function drawPattern(pattern,dynamicRadius) {
 
     
     fill(pattern.dotColor); // Set the fill color for the small pearls
-    ellipse(pearlX, pearlY, 10); // Draw a small pearl
+    ellipse(pearlX, pearlY, dynamicRadius / 18); // Draw a small pearl
    
   }
 
