@@ -15,7 +15,7 @@ function setup() {
   fft = new p5.FFT();
   // Create a canvas to fit the full window size and set the background color
   createCanvas(windowWidth, windowHeight);
-  background('#194973');
+  background('#0D0D0D');
 
   circleDiameter = 350; // Define a fixed diameter for the circles
 
@@ -36,8 +36,8 @@ function setup() {
       
 
       // Generate random colors for the circle and inner shapes
-      let color = [random(255), random(255), random(255)];
-      let dotColor = [random(255), random(255), random(255)];
+      let color = [(50), random(255), random(150,255)];
+      let dotColor = [(50), random(255), random(150,255)];
 
       // Store the circle pattern attributes in the patterns array
       patterns.push({
@@ -60,7 +60,7 @@ function setup() {
 
 // Draw animation
 function draw() {
-  background('#194973'); // Clear the canvas
+  background('#0D0D0D'); // Clear the canvas
   let spectrum = fft.analyze(); // Get the frequency spectrum
   let bass = fft.getEnergy(20,500); 
   
@@ -76,7 +76,7 @@ function draw() {
 
     // Update the colors of the patterns if the song is playing
     for (let pattern of patterns) {
-      pattern.dotColor = [random(255), random(255), random(255)];
+      pattern.dotColor = [(50), random(255), random(150,255)];
     }
   }
 
@@ -117,7 +117,7 @@ function drawPattern(pattern,dynamicRadius) {
 
   let numCircle = 5; // Number of circles
   let startRadius = newOuterRadius/2.2; // Initial radius
-  let radiusStep = 20; // Decreasing radius
+  let radiusStep = newOuterRadius/10; // Decreasing radius
   for(let i = 0; i < numCircle; i++){
     let radius = startRadius - radiusStep * i;
     ellipse(0, 0, radius * 2);
@@ -191,7 +191,7 @@ function drawSawtoothRing(cx, cy, radius, teeth, toothHeight){
 // Function to handle window resizing
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight); // Resize the canvas to fit the new window size
-  background('#194973'); // Clear the canvas with the same background
+  background('#0D0D0D'); // Clear the canvas with the same background
   setup(); // Recalculate columns and rows
   patterns = []; // Reset Pattern Array
   loop();
@@ -219,7 +219,7 @@ function drawSawtoothRing(cx, cy, radius, teeth, toothHeight){
   }
 
   endShape(CLOSE);
-  fill(random(255), random(255), random(255)); // Restore fill properties of other shapes
+  fill((50), random(255), random(150,255)); // Restore fill properties of other shapes
 }
 
 function mousePressed() {
