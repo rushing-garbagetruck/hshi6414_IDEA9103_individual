@@ -4,7 +4,8 @@ let fft;
 let patterns = [];
 let circleDiameter;
 let spacing = 30; // Define space between circles
-let angle = 0; // Global variable to control the rotation angle
+let angle = 0; 
+
 
 function preload() {
   song = loadSound('audio/Bless_This_Space.mp3');
@@ -17,7 +18,7 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   background('#0D0D0D');
 
-  circleDiameter = 350; // Define a fixed diameter for the circles
+  circleDiameter = 300; // Define a fixed diameter for the circles
 
   // Calculate the number of circles that can fit in the canvas width (columns) and height (rows)
   let cols = ceil(width / (circleDiameter + spacing));
@@ -62,11 +63,11 @@ function setup() {
 function draw() {
   background('#0D0D0D'); // Clear the canvas
   let spectrum = fft.analyze(); // Get the frequency spectrum
-  let bass = fft.getEnergy(20,500); 
+  let bass = fft.getEnergy(20,800); 
   
   // Map the bass frequency energy to a range for the outerRadius
-  let dynamicRadius = map(bass, 0, 255, circleDiameter / 2, circleDiameter*1.1); // Adjusted max limit
-  dynamicRadius = constrain(dynamicRadius, circleDiameter / 2, circleDiameter*1.1); // Ensure it stays within limits
+  let dynamicRadius = map(bass, 0, 255, circleDiameter / 2, circleDiameter*1.2); // Adjusted max limit
+  dynamicRadius = constrain(dynamicRadius, circleDiameter / 2, circleDiameter*1.2); // Ensure it stays within limits
 
 
 
@@ -94,15 +95,15 @@ function draw() {
 
 function drawPattern(pattern,dynamicRadius) {
   
-  let numPearls = TWO_PI * dynamicRadius / 20; // The number of pearls is based on the circumference
+  let numPearls = TWO_PI * dynamicRadius / 25; // The number of pearls is based on the circumference
   // Amplify the effect of the frequency energy
   let bassEnergy = fft.getEnergy(20, 140); // Get the energy of the bass frequencies
   let amplifiedEnergy = pow(bassEnergy, 2.5); // Raise the energy to the power of 2.5 to make the change more drastic
   // Map the amplified energy to a usable size for the outerRadius
-  let newOuterRadius = map(amplifiedEnergy, 0, pow(255, 2.5), circleDiameter / 2, circleDiameter * 1.1);
+  let newOuterRadius = map(amplifiedEnergy, 0, pow(255, 2.5), circleDiameter / 2, circleDiameter * 1.2);
   
   // Ensure the newOuterRadius does not exceed the maximum or minimum limits
-  newOuterRadius = constrain(newOuterRadius, circleDiameter / 2, circleDiameter * 1.1);
+  newOuterRadius = constrain(newOuterRadius, circleDiameter / 2, circleDiameter * 1.2);
 
   for (let i = 0; i < numPearls; i++) {
     let angle = i * TWO_PI / numPearls;
@@ -169,7 +170,7 @@ function drawPattern(pattern,dynamicRadius) {
 }
 
 // The drawSawtoothRing function should also be updated to draw around the origin
-function drawSawtoothRing(cx, cy, radius, teeth, toothHeight){
+function drawSawtoothRing( newOuterRadius,radius, teeth, toothHeight){
   let angleIncrement = TWO_PI / teeth;
   beginShape();
   for (let i = 0; i < teeth; i++) {
@@ -181,8 +182,8 @@ function drawSawtoothRing(cx, cy, radius, teeth, toothHeight){
     vertex(innerX, innerY);
     
     // Outer vertex
-    let outerX = (radius + toothHeight) * cos(angle + angleIncrement / 2);
-    let outerY = (radius + toothHeight) * sin(angle + angleIncrement / 2);
+    let outerX = (newOuterRadius + toothHeight) * cos(angle + angleIncrement / 2);
+    let outerY = (newOuterRadius + toothHeight) * sin(angle + angleIncrement / 2);
     vertex(outerX, outerY);
   }
   endShape(CLOSE);
