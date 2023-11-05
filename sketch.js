@@ -18,7 +18,7 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   background('#0D0D0D');
 
-  circleDiameter = 300; // Define a fixed diameter for the circles
+  circleDiameter = 380; // Define a fixed diameter for the circles
 
   // Calculate the number of circles that can fit in the canvas width (columns) and height (rows)
   let cols = ceil(width / (circleDiameter + spacing));
@@ -28,8 +28,8 @@ function setup() {
   for(let i = 0; i < cols; i++) {
     for(let j = 0; j < rows; j++) {
       // Calculate staggered offset for both x and y positions
-      let offsetX = (j % 2) * spacing * 2; // Horizontal staggering
-      let offsetY = (i % 2) * spacing * 2; // Vertical staggering
+      let offsetX = (j % 2) * spacing * 6; // Horizontal staggering
+      let offsetY = (i % 2) * spacing * 6; // Vertical staggering
 
       // Calculate the x and y positions for each circle
       let x = i * (circleDiameter + spacing) + offsetX + circleDiameter / 2;
@@ -66,15 +66,15 @@ function draw() {
   let bass = fft.getEnergy(20,800); 
   
   // Map the bass frequency energy to a range for the outerRadius
-  let dynamicRadius = map(bass, 0, 255, circleDiameter / 2, circleDiameter*1.2); // Adjusted max limit
-  dynamicRadius = constrain(dynamicRadius, circleDiameter / 2, circleDiameter*1.2); // Ensure it stays within limits
+  let dynamicRadius = map(bass, 0, 255, circleDiameter / 2, circleDiameter*1.8); // Adjusted max limit
+  dynamicRadius = constrain(dynamicRadius, circleDiameter / 2, circleDiameter*1.8); // Ensure it stays within limits
 
   if (!song.isPlaying()) {
     // Display start/pause instructions
     fill(255); // Set the text color
     textAlign(CENTER, CENTER); // Align the text to be in the center
     textSize(24); // Set the text size
-    text("Click to Start/Pause", width / 2, height / 2); // Draw the text in the middle of the screen
+    text("Click to Start/Pause", width / 2, 20); // Draw the text in the middle of the top
   }
 
 
@@ -103,15 +103,15 @@ function draw() {
 
 function drawPattern(pattern,dynamicRadius) {
   
-  let numPearls = TWO_PI * dynamicRadius / 25; // The number of pearls is based on the circumference
+  let numPearls = TWO_PI * dynamicRadius / 50; // The number of pearls is based on the circumference
   // Amplify the effect of the frequency energy
-  let bassEnergy = fft.getEnergy(20, 140); // Get the energy of the bass frequencies
+  let bassEnergy = fft.getEnergy(20, 600); // Get the energy of the bass frequencies
   let amplifiedEnergy = pow(bassEnergy, 2.5); // Raise the energy to the power of 2.5 to make the change more drastic
   // Map the amplified energy to a usable size for the outerRadius
-  let newOuterRadius = map(amplifiedEnergy, 0, pow(255, 2.5), circleDiameter / 2, circleDiameter * 1.2);
+  let newOuterRadius = map(amplifiedEnergy, 0, pow(255, 2.5), circleDiameter / 2, circleDiameter * 1.8);
   
   // Ensure the newOuterRadius does not exceed the maximum or minimum limits
-  newOuterRadius = constrain(newOuterRadius, circleDiameter / 2, circleDiameter * 1.2);
+  newOuterRadius = constrain(newOuterRadius, circleDiameter / 2, circleDiameter * 1.8);
 
   for (let i = 0; i < numPearls; i++) {
     let angle = i * TWO_PI / numPearls;
@@ -120,7 +120,7 @@ function drawPattern(pattern,dynamicRadius) {
 
     
     fill(pattern.dotColor); // Set the fill color for the small pearls
-    ellipse(pearlX, pearlY, dynamicRadius / 18); // Draw a small pearl
+    ellipse(pearlX, pearlY, dynamicRadius / 30); // Draw a small pearl
    
   }
 
